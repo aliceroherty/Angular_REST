@@ -1,0 +1,23 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.card {
+    color: #fff;
+    border-radius: 4px;
+    background-color: #1976d2;
+    width: 50%;
+    margin: 0 8px 16px;
+    padding: 16px;
+    justify-content: center;
+    align-items: center;    
+    line-height: 24px;
+}
+
+input.ng-invalid.ng-touched {
+    border: 1px solid rgb(204, 12, 5);
+    background-color: rgb(255, 133, 133);
+}

@@ -1,0 +1,44 @@
+<!--Error messages-->
+<h1 *ngIf="message" style="color: red;text-align: center;">{{message}}</h1>
+
+<!--Loading customers busy indicator-->
+<div *ngIf='loadingCustomers' style="text-align: center;">
+    <img src='../../assets/images/loading2.svg' style="vertical-align:middle;" height='40px;' /><br /><span
+        class="loading">Loading...</span>
+</div>
+
+<!--Deletion busy indicator-->
+<div *ngIf='customerDeleting' style="text-align: center;">
+    <img src='../../assets/images/loading2.svg' height='40px;'/><br /><span
+    class="loading">Deleting...</span>
+</div>
+
+<!--Render the customer list in a table-->
+<div *ngIf="customers" class="card-container">
+    <div>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>SSN</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let customer of customers">
+                <td>
+                    <!--Hyperlink to the Customer Component to load details-->
+                    <a routerLink='/detail/{{customer.id}}'>{{customer.id}}</a>
+                </td>
+                <td>{{customer.firstName}}</td>
+                <td>{{customer.lastName}}</td>
+                <td>{{customer.ssn}}</td>
+                <td>
+                    <!--Delete button for customer providing the Customer Id-->
+                    <button (click)='deleteCustomer(customer.id)'>Delete</button>
+                </td>
+            </tr>
+        </table>
+    </div>        
+</div>
+<!--Message to users if no customers exist-->
+<div *ngIf="!loadingCustomers&&!customers">No customers</div>

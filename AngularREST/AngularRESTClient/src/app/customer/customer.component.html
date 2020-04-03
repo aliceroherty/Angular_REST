@@ -1,0 +1,119 @@
+<h1 *ngIf="message" style="color: red;text-align: center;">{{ message }}</h1>
+<h2 style="text-align: center;" *ngIf="customer">Customer Form</h2>
+<div *ngIf="loadingCustomer" style="text-align: center;">
+  <img
+    src="../../assets/images/loading2.svg"
+    style="vertical-align:middle;"
+    height="40px;"
+  /><br /><span class="loading">Loading...</span>
+</div>
+
+<!--
+    To add validation to a template-driven form, you add the same validation attributes as you 
+    would with native HTML form validation. 
+    Angular uses directives to match these attributes with validator functions in the framework.
+-->
+
+<div class="card-container" *ngIf="!loadingCustomer">
+  <div class="card">
+    <form #customerForm="ngForm" (ngSubmit)="onFormSubmit(customerForm)">
+      <div *ngIf="customer.id">
+        <label
+          >Id:<br /><input
+            name="id"
+            #id="ngModel"
+            [(ngModel)]="customer.id"
+            class="form-control"
+            readonly
+        /></label>
+      </div>
+      <div>
+        <!--We must import FormsModule in App Module-->
+        <label
+          >First Name:<br /><input
+            name="firstName"
+            required
+            minlength="3"
+            #firstName="ngModel"
+            [(ngModel)]="customer.firstName"
+            class="form-control"
+        /></label>
+
+        <i
+          *ngIf="
+            (firstName?.errors?.required || firstName?.errors?.minlength) &&
+            customerForm.submitted &&
+            !isValidFormSubmitted
+          "
+          class="fas fa-exclamation-circle err"
+          [attr.title]="
+            firstName?.errors?.required
+              ? 'First name required'
+              : firstName?.errors?.minlength
+              ? 'First name minimum length 3'
+              : ''
+          "
+        ></i>
+      </div>
+      <div>
+        <label
+          >Last Name:<br /><input
+            name="lastName"
+            required
+            minlength="5"
+            #lastName="ngModel"
+            [(ngModel)]="customer.lastName"
+            class="form-control"
+        /></label>
+
+        <i
+          *ngIf="
+            (lastName?.errors?.required || lastName?.errors?.minlength) &&
+            customerForm.submitted &&
+            !isValidFormSubmitted
+          "
+          class="fas fa-exclamation-circle err"
+          [attr.title]="
+            lastName?.errors?.required
+              ? 'Last name required'
+              : lastName?.errors?.minlength
+              ? 'Last name minimum length 5'
+              : ''
+          "
+        ></i>
+      </div>
+      <div>
+        <label
+          >SSN:<br /><input
+            name="ssn"
+            required
+            pattern="\d{3}-\d{3}-\d{3}"
+            #ssn="ngModel"
+            [(ngModel)]="customer.ssn"
+            class="form-control"
+        /></label>
+
+        <i
+          *ngIf="
+            (ssn?.errors?.pattern || ssn?.errors?.required) &&
+            customerForm.submitted &&
+            !isValidFormSubmitted
+          "
+          class="fas fa-exclamation-circle err"
+          title="Incorrect SSN format"
+        ></i>
+      </div>
+      <br />
+      <!-- while customer is saving, button is disabled -->
+      <button [disabled]="customerSaving">{{ button }}</button>
+      <img
+        *ngIf="customerSaving"
+        src="../../assets/images/loading3.svg"
+        height="20px;"
+      />
+      <div>
+        {{ saveMessage }}
+      </div>
+    </form>
+  </div>
+</div>
