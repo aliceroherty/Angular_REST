@@ -27,7 +27,7 @@
             <tr *ngFor="let customer of customers">
                 <td>
                     <!--Hyperlink to the Customer Component to load details-->
-                    <a routerLink='/detail/{{customer.id}}'>{{customer.id}}</a>
+                    <a routerLink='/customers/detail/{{customer.id}}'>{{customer.id}}</a>
                 </td>
                 <td>{{customer.firstName}}</td>
                 <td>{{customer.lastName}}</td>

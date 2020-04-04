@@ -1,1 +1,38 @@
-<p>department-list works!</p>
+<h1 *ngIf="message" style="color:red;text-align:center;">{{message}}</h1>
+
+<div *ngIf="loadingDepartments" style="text-align: center;">
+    <img src="../../assets//images//loading2.svg" style="vertical-align: middle;" height="40px" />
+    <br/>
+    <span class="loading">Loading...</span>
+</div>
+
+<div *ngIf="departmentDeleting" style="text-align: center;">
+    <img src="../../assets//images//loading2.svg" style="vertical-align: middle;" height="40px" />
+    <br/>
+    <span class="loading">Deleting...</span>
+</div>
+
+<div *ngIf="departments" class="card-container">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            
+            <!--Empty Column Header to leave room for button-->
+            <th></th>
+        </tr>
+        <tr *ngFor="let department of departments">
+            <td>
+                <a routerLink="/departments/detail/{{department.id}}">{{department.id}}</a>
+            </td>
+            <td>{{department.name}}</td>
+            <td>{{department.description}}</td>
+            <td>
+                <button (click)="deleteDepartment(department.id)">Delete</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div *ngIf="!loadingDepartments && !departments">No Departments</div>

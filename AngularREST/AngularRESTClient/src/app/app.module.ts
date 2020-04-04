@@ -15,7 +15,7 @@ import { DepartmentListComponent } from './department-list/department-list.compo
 import { DepartmentService } from './services/department.service';
 
 @NgModule({
-  declarations: [AppComponent, CustomerListComponent, CustomerComponent, DepartmentComponent, DepartmentListComponent, SharedComponent],
+  declarations: [AppComponent, CustomerListComponent, CustomerComponent, DepartmentComponent, DepartmentListComponent ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [CustomerService, DepartmentService],
   bootstrap: [AppComponent]

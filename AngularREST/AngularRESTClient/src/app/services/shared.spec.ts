@@ -1,7 +1,7 @@
-import { Shared } from './shared';
+import { SharedService } from './shared.service';
 
 describe('Shared', () => {
   it('should create an instance', () => {
-    expect(new Shared()).toBeTruthy();
+    expect(new SharedService()).toBeTruthy();
   });
 });

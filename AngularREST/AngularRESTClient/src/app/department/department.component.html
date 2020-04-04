@@ -1,1 +1,65 @@
-<p>department works!</p>
+<h1 *ngIf="message" style="color:red;text-align:center;">{{message}}</h1>
+<h2 style="text-align:center;" *ngIf="department">Department Form</h2>
+
+<!--Show loading icon if flag is true-->
+<div *ngIf="loadingDepartment" style="text-align:center;">
+    <img src="../../assets/images/loading2.svg" style="vertical-align: middle;" height="40px"/>
+    <br/>
+    <span class="loading">Loading...</span>
+</div>
+
+<div class="card-container" *ngIf="!loadingDepartment && department">
+    <div class="card">
+        <form #departmentForm="ngForm"(ngSubmit)="onFormSubmit(departmentForm)">
+            <!--Readonly Textbox for Department ID if there is one-->
+            <div *ngIf="department.id">
+                <label>ID:
+                    <br/>
+                    <input name="id" #id="ngModel" [(ngModel)]="department.id" class="form-control" readonly />
+                </label>
+            </div>
+            <div>
+                <label>Department Name:
+                    <br/>
+                    <input name="name" required minlength="3" #name="ngModel" [(ngModel)]="department.name" class="form-control" />
+                </label>
+                <!--Error Provider-->
+                <i 
+                    *ngIf="(name?.errors?.required || name?.errors?.minlength) && departmentForm.submitted && !isValidFormSubmitted"
+                    class="fas fa-exclamation-circle err"
+                    [attr.title]=
+                    "
+                        name?.errors?.required 
+                        ? 'Name is Required.'
+                        : name?.errors?.minlength
+                        ? 'Name must be at least 3 characters in length.'
+                        : ''
+                    "
+                ></i>
+            </div>
+            <div>
+                <label>Description:
+                    <br/>
+                    <textarea name="description" required #description="ngModel" [(ngModel)]="department.description" class="form-control"></textarea>
+                </label>
+
+                <i
+                    *ngIf="description?.errors?.required && departmentForm.submitted && !isValidFormSubmitted" 
+                    class="fas fa-exclamation-circle err"
+                    [attr.title]=
+                    "
+                        description?.errors?.required 
+                        ? 'Desccription is Required.'
+                        : ''
+                    "
+                ></i>
+            </div>
+            <br/>
+            <button [disabled]="departmentSaving">{{button}}</button>
+            <img *ngIf="departmentSaving" src="../../assets/images/loading3.svg" height="20px"/>
+            <div>
+                {{saveMessage}}
+            </div>
+        </form>
+    </div>
+</div>

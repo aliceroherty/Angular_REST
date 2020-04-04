@@ -12,20 +12,16 @@ import {
 } from "@angular/common/http";
 //Import catchError function for Error Handling for rxjs and observables
 import { catchError } from "rxjs/operators";
+import { SharedService, IN_MEMORY, API_URL } from './shared.service';
 
 @Injectable({
   providedIn: "root"
 })
-export class CustomerService {
+export class CustomerService extends SharedService {
   /**
    * Our in memory customer datasource. Migrate to REST Services
    */
   customers: Array<Customer>;
-
-  /**
-   * Our errors array for holding http errors
-   */
-  errors: string[] = [];
 
   /**
    * Customer Service Constructor
@@ -37,26 +33,7 @@ export class CustomerService {
    *
    * Inject HttpClient class with private access modifier
    */
-  constructor(private http: HttpClient) {}
-
-  /**
-   * Set up for our Http options for REST API Comms
-   * Content-Type we are sending
-   * Accept for content we are receiving
-   *
-   * Our type will be application/json
-   *
-   */
-
-  private httpOptions() {
-    const HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json", //datatype I am sending
-        Accept: "application/json" //datatype to accept
-      })
-    };
-    return HTTP_OPTIONS;
-  }
+  constructor(private http: HttpClient) {super()}
 
   /**
    * Create a customer. Returns the primary key.
@@ -65,7 +42,7 @@ export class CustomerService {
    */
   public createCustomer(customer: Customer): Observable<Customer> {
     //ensure there are no errors in the service
-    this.clearErrors();
+    super.clearErrors();
 
     if (IN_MEMORY) {
       if (this.customers == null) this.customers = new Array();
@@ -170,35 +147,5 @@ export class CustomerService {
       .get<Customer>(API_METHOD)
       .pipe(catchError(this.handleError));
     //Change out to call to REST API
-  }
-
-  /**
-   * Clear any errors
-   */
-  public clearErrors() {
-    this.errors = [];
-  }
-
-  /**
-   * Add handleError Http error handler code
-   */
-  /**
-   * Http error handler
-   * @param error the HttpErrorResponse from the REST API
-   */
-  private handleError(error: HttpErrorResponse) {
-    //We can use instanceof to check different error tyes
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error("An error occurred:", error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
-      );
-    }
-    // return an observable with a user-facing error message
-    return throwError("Something bad happened; please try again later.");
   }
 }
